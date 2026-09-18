@@ -1,0 +1,4 @@
+namespace Autonomous
+{
+void autonomous();
+}
