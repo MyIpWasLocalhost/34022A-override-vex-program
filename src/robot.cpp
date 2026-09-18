@@ -56,6 +56,32 @@ void drivetrainside::reset()
 drivetrainside lDT = drivetrainside(vex::PORT10, vex::PORT12, vex::PORT13, true);
 drivetrainside rDT = drivetrainside(vex::PORT1, vex::PORT2, vex::PORT3, false);
 
+void drivetrain::move(double voltage)
+{
+    left.spin(voltage);
+    right.spin(voltage);
+}
+
+void drivetrain::turn(double voltage)
+{
+    left.spin(voltage);
+    right.spin(-voltage);
+}
+
+void drivetrain::stop()
+{
+    left.stop();
+    right.stop();
+}
+
+void drivetrain::reset()
+{
+    left.reset();
+    right.reset();
+}
+
+drivetrain DT = drivetrain(lDT, rDT);
+
 void lift::raise(double voltage)
 {
     left.spin(vex::forward, voltage, vex::voltageUnits::mV);

@@ -22,6 +22,23 @@ struct drivetrainside
     void reset();
 };
 
+struct drivetrain
+{
+  private:
+    drivetrainside left;
+    drivetrainside right;
+
+  public:
+    drivetrain(drivetrainside leftside, drivetrainside rightside) : left(leftside), right(rightside)
+    {
+    }
+
+    void move(double voltage);
+    void turn(double voltage);
+    void stop();
+    void reset();
+};
+
 struct lift
 {
   private:
@@ -48,6 +65,7 @@ extern vex::digital_out pneumatics;
 extern vex::inertial inertial;
 extern drivetrainside lDT;
 extern drivetrainside rDT;
+extern drivetrain DT;
 extern lift Lift;
 
 void push();

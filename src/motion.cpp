@@ -159,12 +159,10 @@ void output(double value)
     switch (current_typePID)
     {
     case linear:
-        Robot::lDT.spin(value);
-        Robot::rDT.spin(value);
+        Robot::DT.move(value);
         break;
     case turn:
-        Robot::lDT.spin(value);
-        Robot::rDT.spin(-value);
+        Robot::DT.turn(value);
         break;
     }
 }
@@ -189,8 +187,7 @@ double clamp_volt(double voltage)
 void runPID()
 {
     Robot::Brain.resetTimer();
-    Robot::lDT.reset();
-    Robot::rDT.reset();
+    Robot::DT.reset();
     getCurrentPID()->clear();
     int settle_counter = 0;
     constexpr int required_count = 5;
@@ -208,15 +205,13 @@ void runPID()
         output(clamp_volt(result));
         vex::wait(10, vex::msec);
     }
-    Robot::lDT.stop();
-    Robot::rDT.stop();
+    Robot::DT.stop();
 }
 
 void linearDrive(double degree)
 {
     Robot::Brain.resetTimer();
-    Robot::lDT.reset();
-    Robot::rDT.reset();
+    Robot::DT.reset();
     linearPID.clear();
     int settle_counter = 0;
     constexpr int required_count = 5;
@@ -230,13 +225,11 @@ void linearDrive(double degree)
         if (settle_counter > required_count) break;
 
         double result = clamp_volt(linearPID.update(error));
-        Robot::lDT.spin(result);
-        Robot::rDT.spin(result);
+        Robot::DT.move(result);
         vex::wait(10, vex::msec);
     }
 
-    Robot::lDT.stop();
-    Robot::rDT.stop();
+    Robot::DT.stop();
 }
 
 void turnDrive(double degree)
@@ -260,13 +253,11 @@ void turnDrive(double degree)
         if (settle_counter > required_count) break;
 
         double result = clamp_volt(turnPID.update(error));
-        Robot::lDT.spin(-result);
-        Robot::rDT.spin(result);
+        Robot::DT.turn(result);
         vex::wait(10, vex::msec);
     }
 
-    Robot::lDT.stop();
-    Robot::rDT.stop();
+    Robot::DT.stop();
 }
 
 } // namespace Motion
