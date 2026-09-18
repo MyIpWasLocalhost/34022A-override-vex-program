@@ -39,6 +39,9 @@ void checker()
     Robot::Brain.Screen.print("Current right lift degree:%.2f", Robot::Lift.read(1));
     Robot::Brain.Screen.setCursor(10, 1);
     Robot::Brain.Screen.print("Current right lift degree:%.2f", Robot::Lift.read(2));
+
+    Robot::Brain.Screen.setCursor(12, 1);
+    Robot::Brain.Screen.print("Current angle heading:%.2f", Robot::inertial.heading());
 }
 
 void control()
