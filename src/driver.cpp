@@ -16,32 +16,21 @@ void checker()
                               Robot::rDT.read(2), Robot::rDT.read(3));
     // PID Tuning Content from here on
     Robot::Brain.Screen.setCursor(3, 1);
-    Robot::Brain.Screen.print("Current on PID tuning: %s", Motion::nameof(Motion::current_typePID));
-
-    Robot::Brain.Screen.setCursor(4, 1);
-    Robot::Brain.Screen.print("Current on coefficient tuning: %s",
-                              Motion::nameof(Motion::current_coefficient));
+    Robot::Brain.Screen.print("on: %s ", Motion::nameof(Motion::current_typePID));
+    Robot::Brain.Screen.print("coefficient: %s", Motion::nameof(Motion::current_coefficient));
 
     Robot::Brain.Screen.setCursor(5, 1);
-    Robot::Brain.Screen.print("Current quantity of each inc/dec: %d", Motion::quantity);
+    Robot::Brain.Screen.print("step size Q: %d", Motion::quantity);
 
     Robot::Brain.Screen.setCursor(6, 1);
     Motion::pid *current = Motion::getCurrentPID();
-    Robot::Brain.Screen.print("Current Coefficient P:%.2f", current->kP);
+    Robot::Brain.Screen.print("p:%.2f, i:%.2f, d:%.2f", current->kP, current->kI, current->kD);
 
     Robot::Brain.Screen.setCursor(7, 1);
-    Robot::Brain.Screen.print("Current Coefficient I:%.2f", current->kI);
+    Robot::Brain.Screen.print("ll:%.2f, rl:%.2f", Robot::Lift.read(1), Robot::Lift.read(2));
 
     Robot::Brain.Screen.setCursor(8, 1);
-    Robot::Brain.Screen.print("Current Coefficient D:%.2f", current->kD);
-
-    Robot::Brain.Screen.setCursor(9, 1);
-    Robot::Brain.Screen.print("Current right lift degree:%.2f", Robot::Lift.read(1));
-    Robot::Brain.Screen.setCursor(10, 1);
-    Robot::Brain.Screen.print("Current right lift degree:%.2f", Robot::Lift.read(2));
-
-    Robot::Brain.Screen.setCursor(12, 1);
-    Robot::Brain.Screen.print("Current angle heading:%.2f", Robot::inertial.heading());
+    Robot::Brain.Screen.print("heading:%.2f", Robot::inertial.heading());
 }
 
 void control()
