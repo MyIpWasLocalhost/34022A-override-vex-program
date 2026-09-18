@@ -212,4 +212,55 @@ void runPID()
     Robot::rDT.stop();
 }
 
+void linearDrive(double degree)
+{
+    Robot::Brain.resetTimer();
+    Robot::lDT.reset();
+    Robot::rDT.reset();
+    linearPID.clear();
+    int settle_counter = 0;
+    constexpr int required_count = 5;
+    while (Robot::Brain.Timer.time(vex::msec) < 5000)
+    {
+        double error = degree - (Robot::lDT.read() + Robot::rDT.read()) / 2.0;
+        if (fabs(error) < acceptance())
+            settle_counter++;
+        else
+            settle_counter = 0;
+        if (settle_counter > required_count) break;
+
+        double result = clamp_volt(linearPID.update(error));
+        Robot::lDT.spin(result);
+        Robot::rDT.spin(result);
+        vex::wait(10, vex::msec);
+    }
+
+    Robot::lDT.stop();
+    Robot::rDT.stop();
+}
+
+void turnDrive(double degree)
+{
+    Robot::Brain.resetTimer();
+    int settle_counter = 0;
+    constexpr int required_count = 5;
+    while (Robot::Brain.Timer.time(vex::msec) < 5000)
+    {
+        double error = degree - (Robot::lDT.read() + Robot::rDT.read()) / 2.0;
+        if (fabs(error) < acceptance())
+            settle_counter++;
+        else
+            settle_counter = 0;
+        if (settle_counter > required_count) break;
+
+        double result = clamp_volt(turnPID.update(error));
+        Robot::lDT.spin(-result);
+        Robot::rDT.spin(result);
+        vex::wait(10, vex::msec);
+    }
+
+    Robot::lDT.stop();
+    Robot::rDT.stop();
+}
+
 } // namespace Motion

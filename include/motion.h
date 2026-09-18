@@ -139,4 +139,6 @@ void change_coefficient();
 void change_typePID();
 void runPID();
 pid *getCurrentPID();
+void linearDrive(double degree);
+void turnDrive(double degree);
 } // namespace Motion
