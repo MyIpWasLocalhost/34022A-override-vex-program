@@ -65,9 +65,6 @@ void stop()
 
 void startDriver()
 {
-    Robot::Controller.ButtonLeft.pressed(Robot::push);
-    Robot::Controller.ButtonRight.pressed(Robot::back);
-
     Robot::Controller.Axis3.changed(control);
     Robot::Controller.Axis1.changed(control);
 
