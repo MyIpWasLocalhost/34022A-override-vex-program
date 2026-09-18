@@ -223,7 +223,7 @@ void linearDrive(double degree)
     while (Robot::Brain.Timer.time(vex::msec) < 5000)
     {
         double error = degree - (Robot::lDT.read() + Robot::rDT.read()) / 2.0;
-        if (fabs(error) < acceptance())
+        if (fabs(error) < 30.0)
             settle_counter++;
         else
             settle_counter = 0;
@@ -246,8 +246,14 @@ void turnDrive(double degree)
     constexpr int required_count = 5;
     while (Robot::Brain.Timer.time(vex::msec) < 5000)
     {
-        double error = degree - (Robot::lDT.read() + Robot::rDT.read()) / 2.0;
-        if (fabs(error) < acceptance())
+        double error = degree - Robot::inertial.heading();
+        // handle specified cases where angular error > 180.0 in absolute values(either case)
+        if (error > 180.0)
+            error = error - 360;
+        else if (error < -180.0)
+            error = 360 + error;
+
+        if (fabs(error) < 1)
             settle_counter++;
         else
             settle_counter = 0;
