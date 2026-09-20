@@ -34,6 +34,7 @@ struct drivetrain
     }
 
     void move(double voltage);
+    void movefor(double voltage, double time);
     void turn(double voltage);
     void stop();
     void reset();
@@ -53,7 +54,9 @@ struct lift
     }
 
     void raise(double voltage);
+    void raisefor(double voltage, double time);
     void drop(double voltage);
+    void dropfor(double voltage, double time);
     double read();
     double read(int32_t motor);
     void stop();

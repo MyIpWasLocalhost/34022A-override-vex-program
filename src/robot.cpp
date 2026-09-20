@@ -62,6 +62,13 @@ void drivetrain::move(double voltage)
     right.spin(voltage);
 }
 
+void drivetrain::movefor(double voltage, double time)
+{
+    move(voltage);
+    vex::wait(time, vex::msec);
+    stop();
+}
+
 void drivetrain::turn(double voltage)
 {
     left.spin(voltage);
@@ -88,10 +95,24 @@ void lift::raise(double voltage)
     right.spin(vex::forward, voltage, vex::voltageUnits::mV);
 }
 
+void lift::raisefor(double voltage, double time)
+{
+    raise(voltage);
+    vex::wait(time, vex::msec);
+    stop();
+}
+
 void lift::drop(double voltage)
 {
     left.spin(vex::reverse, voltage, vex::voltageUnits::mV);
     right.spin(vex::reverse, voltage, vex::voltageUnits::mV);
+}
+
+void lift::dropfor(double voltage, double time)
+{
+    drop(voltage);
+    vex::wait(time, vex::msec);
+    stop();
 }
 
 void lift::stop()
