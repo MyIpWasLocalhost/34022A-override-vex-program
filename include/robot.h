@@ -1,3 +1,4 @@
+#include "task.h"
 #include "vex.h"
 namespace Robot
 {
@@ -70,6 +71,7 @@ extern drivetrainside lDT;
 extern drivetrainside rDT;
 extern drivetrain DT;
 extern lift Lift;
+extern Task::asynctaskqueue liftqueue;
 
 void push();
 void back();
