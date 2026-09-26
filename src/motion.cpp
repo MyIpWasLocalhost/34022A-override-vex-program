@@ -36,8 +36,8 @@ void pid::clear()
     integral = 0.0;
 }
 
-pid linearPID = pid(7000, 0, 0, 0.2);
-pid turnPID = pid(50, 0, 0, 0);
+pid linearPID = pid(20, 0, 0, 0.2);
+pid turnPID = pid(210, 12, 250, 10);
 
 coefficient current_coefficient = p;
 sizes quantity = l;
@@ -98,7 +98,7 @@ double getError(double goal)
         double average_degree_right = Robot::rDT.read();
         double total_average = (average_degree_left + average_degree_right) / 2.0;
 
-        return goal - utils::motor_to_distance(total_average);
+        return goal - total_average;
     }
     case turn: {
         double error = goal - Robot::inertial.heading();
@@ -151,7 +151,7 @@ void pid::decrement()
 
 double step_goal()
 {
-    return (current_typePID == linear) ? 1.5 : 90;
+    return (current_typePID == linear) ? 720 : 90;
 }
 
 void output(double value)
