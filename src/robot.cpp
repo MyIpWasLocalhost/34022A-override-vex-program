@@ -121,6 +121,12 @@ void lift::stop()
     right.stop();
 }
 
+void lift::stop(vex::brakeType brake)
+{
+    left.stop(brake);
+    right.stop(brake);
+}
+
 double lift::read(int32_t motor)
 {
     switch (motor)

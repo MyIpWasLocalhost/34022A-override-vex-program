@@ -61,6 +61,7 @@ struct lift
     double read();
     double read(int32_t motor);
     void stop();
+    void stop(vex::brakeType brake);
 };
 
 extern vex::brain Brain;
