@@ -32,11 +32,11 @@ void checker()
     Robot::Brain.Screen.setCursor(8, 1);
     Robot::Brain.Screen.print("heading:%.2f", Robot::inertial.heading());
 }
-
+double k = 0.4;
 void control()
 {
-    double front = Robot::Controller.Axis3.position() * 120;
-    double side = Robot::Controller.Axis1.position() * 80;
+    double front = Robot::Controller.Axis3.position() * 120 * k;
+    double side = Robot::Controller.Axis1.position() * 80 * k;
 
     double left_out = front + side;
     double right_out = front - side;
@@ -44,6 +44,24 @@ void control()
     Robot::lDT.spin(left_out);
     Robot::rDT.spin(right_out);
     checker();
+}
+
+void switchspeed()
+{
+    if (k == 0.75)
+    {
+        k = 0.4;
+        Robot::Controller.Screen.clearLine();
+        Robot::Controller.Screen.setCursor(1, 1);
+        Robot::Controller.Screen.print("SLOW");
+    }
+    else
+    {
+        k = 0.75;
+        Robot::Controller.Screen.clearLine();
+        Robot::Controller.Screen.setCursor(1, 1);
+        Robot::Controller.Screen.print("FAST");
+    }
 }
 
 void raise()
@@ -63,25 +81,37 @@ void stop()
     Robot::Lift.stop();
 }
 
+void change()
+{
+    static bool isOpen = false;
+    if (isOpen)
+        Robot::back();
+    else
+        Robot::push();
+    isOpen = !isOpen;
+}
+
 void startDriver()
 {
+    Robot::Controller.Screen.clearLine();
+    Robot::Controller.Screen.setCursor(1, 1);
+    Robot::Controller.Screen.print("FAST");
     Robot::Controller.Axis3.changed(control);
     Robot::Controller.Axis1.changed(control);
 
-    Robot::Controller.ButtonL1.pressed(raise);
-    Robot::Controller.ButtonR1.pressed(drop);
-    Robot::Controller.ButtonL1.released(stop);
-    Robot::Controller.ButtonR1.released(stop);
+    Robot::Controller.ButtonL1.pressed(drop);
+    Robot::Controller.ButtonR1.pressed(raise);
+    Robot::Controller.ButtonL1.released([]() { Robot::Lift.stop(vex::hold); });
+    Robot::Controller.ButtonR1.released([]() { Robot::Lift.stop(vex::coast); });
 
-    Robot::Controller.ButtonL2.pressed(Robot::push);
-    Robot::Controller.ButtonR2.pressed(Robot::back);
+    Robot::Controller.ButtonX.pressed(change);
     // PID Tuning Content
     Robot::Controller.ButtonUp.pressed([]() { Motion::getCurrentPID()->increment(); });
     Robot::Controller.ButtonDown.pressed([]() { Motion::getCurrentPID()->decrement(); });
 
     Robot::Controller.ButtonLeft.pressed(Motion::change_typePID);
     Robot::Controller.ButtonRight.pressed(Motion::change_coefficient);
-    Robot::Controller.ButtonA.pressed(Motion::change_quantity);
+    Robot::Controller.ButtonA.pressed(switchspeed);
     Robot::Controller.ButtonB.pressed(Motion::runPID);
 
     Robot::Controller.ButtonLeft.released(checker);
