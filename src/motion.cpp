@@ -36,8 +36,8 @@ void pid::clear()
     integral = 0.0;
 }
 
-pid linearPID = pid(20, 0, 0, 0.2);
-pid turnPID = pid(210, 12, 250, 10);
+pid linearPID = pid(20, 2, 0, 90);
+pid turnPID = pid(160, 14, 900, 10);
 
 coefficient current_coefficient = p;
 sizes quantity = l;
