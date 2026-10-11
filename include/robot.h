@@ -39,6 +39,7 @@ struct drivetrain
     void turn(double voltage);
     void stop();
     void reset();
+    double read();
 };
 
 struct lift

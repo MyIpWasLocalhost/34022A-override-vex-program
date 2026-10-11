@@ -87,6 +87,11 @@ void drivetrain::reset()
     right.reset();
 }
 
+double drivetrain::read()
+{
+    return (left.read() + right.read()) / 2.0;
+}
+
 drivetrain DT = drivetrain(lDT, rDT);
 
 void lift::raise(double voltage)
