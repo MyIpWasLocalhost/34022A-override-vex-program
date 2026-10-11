@@ -32,7 +32,7 @@ void checker()
     Robot::Brain.Screen.setCursor(8, 1);
     Robot::Brain.Screen.print("heading:%.2f", Robot::inertial.heading());
 }
-double k = 0.4;
+double k = 0.5;
 void control()
 {
     double front = Robot::Controller.Axis3.position() * 120 * k;
@@ -50,7 +50,7 @@ void switchspeed()
 {
     if (k == 0.75)
     {
-        k = 0.4;
+        k = 0.5;
         Robot::Controller.Screen.clearLine();
         Robot::Controller.Screen.setCursor(1, 1);
         Robot::Controller.Screen.print("SLOW");
@@ -91,6 +91,11 @@ void change()
     isOpen = !isOpen;
 }
 
+void matchloadlift(){
+    Robot::Lift.raisefor(12000, 200);
+    Robot::Lift.stop(vex::hold);
+}
+
 void startDriver()
 {
     Robot::Controller.Screen.clearLine();
@@ -112,7 +117,7 @@ void startDriver()
     Robot::Controller.ButtonLeft.pressed(Motion::change_typePID);
     Robot::Controller.ButtonRight.pressed(Motion::change_coefficient);
     Robot::Controller.ButtonA.pressed(switchspeed);
-    Robot::Controller.ButtonB.pressed(Motion::runPID);
+    Robot::Controller.ButtonB.pressed(matchloadlift);
 
     Robot::Controller.ButtonLeft.released(checker);
     Robot::Controller.ButtonRight.released(checker);
