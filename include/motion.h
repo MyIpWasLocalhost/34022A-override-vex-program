@@ -140,5 +140,7 @@ void change_typePID();
 void runPID();
 pid *getCurrentPID();
 void linearDrive(double degree);
+void linearDrive(double degree, double precision);
 void turnDrive(double degree);
+void turnDrive(double degree, double precision);
 } // namespace Motion
