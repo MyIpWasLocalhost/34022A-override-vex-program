@@ -49,7 +49,7 @@ struct lift
     vex::motor right;
 
   public:
-    lift(int32_t l, int32_t r) : left(l, false), right(r, true)
+    lift(int32_t l, int32_t r) : left(l, true), right(r, false)
     {
         left.setStopping(vex::brakeType::coast);
         right.setStopping(vex::brakeType::coast);

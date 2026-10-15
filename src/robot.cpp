@@ -53,8 +53,8 @@ void drivetrainside::reset()
     back.resetPosition();
 }
 
-drivetrainside lDT = drivetrainside(vex::PORT10, vex::PORT12, vex::PORT13, true);
-drivetrainside rDT = drivetrainside(vex::PORT1, vex::PORT2, vex::PORT3, false);
+drivetrainside lDT = drivetrainside(vex::PORT11, vex::PORT12, vex::PORT13, true);
+drivetrainside rDT = drivetrainside(vex::PORT18, vex::PORT19, vex::PORT20, false);
 
 void drivetrain::move(double voltage)
 {
