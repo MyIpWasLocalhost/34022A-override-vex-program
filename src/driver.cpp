@@ -91,7 +91,8 @@ void change()
     isOpen = !isOpen;
 }
 
-void matchloadlift(){
+void matchloadlift()
+{
     Robot::Lift.raisefor(12000, 200);
     Robot::Lift.stop(vex::hold);
 }
@@ -106,8 +107,8 @@ void startDriver()
 
     Robot::Controller.ButtonL1.pressed(drop);
     Robot::Controller.ButtonR1.pressed(raise);
-    Robot::Controller.ButtonL1.released([]() { Robot::Lift.stop(vex::hold); });
-    Robot::Controller.ButtonR1.released([]() { Robot::Lift.stop(vex::coast); });
+    Robot::Controller.ButtonL1.released([]() { Robot::Lift.stop(vex::coast); });
+    Robot::Controller.ButtonR1.released([]() { Robot::Lift.stop(vex::hold); });
 
     Robot::Controller.ButtonX.pressed(change);
     // PID Tuning Content
