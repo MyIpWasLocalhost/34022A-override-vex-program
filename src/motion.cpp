@@ -222,7 +222,7 @@ void linearDrive(double degree, double precision)
     constexpr int required_count = 5;
     while (Robot::Brain.Timer.time(vex::msec) < 5000)
     {
-        double error = degree - (Robot::lDT.read() + Robot::rDT.read()) / 2.0;
+        double error = degree - Robot::DT.read();
         if (fabs(error) < precision)
             settle_counter++;
         else
@@ -235,6 +235,40 @@ void linearDrive(double degree, double precision)
     }
 
     Robot::DT.stop();
+}
+
+void hybridLinearDrive(double degree, double initial, double section, double precision)
+{
+    Robot::Brain.resetTimer();
+    Robot::DT.reset();
+    linearPID.clear();
+    double bound = degree * section;
+    Robot::DT.move(initial);
+    while (Robot::DT.read() < bound)
+        vex::wait(10, vex::msec);
+
+    constexpr int required_count = 5;
+    int settle_counter = 0;
+    while (Robot::Brain.Timer.time(vex::msec) < 5000)
+    {
+        double error = degree - Robot::DT.read();
+        if (fabs(error) < precision)
+            settle_counter++;
+        else
+            settle_counter = 0;
+        if (settle_counter < required_count) break;
+
+        double result = clamp_volt(linearPID.update(error));
+        Robot::DT.move(result);
+        vex::wait(10, vex::msec);
+    }
+
+    Robot::DT.stop();
+}
+
+void hybridLinearDrive(double degree, double initial, double section)
+{
+    hybridLinearDrive(degree, initial, section, 30.0);
 }
 
 void turnDrive(double degree)

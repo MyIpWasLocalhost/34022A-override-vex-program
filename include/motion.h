@@ -141,6 +141,8 @@ void runPID();
 pid *getCurrentPID();
 void linearDrive(double degree);
 void linearDrive(double degree, double precision);
+void hybridLinearDrive(double degree, double initial, double section, double precision);
+void hybridLinearDrive(double degree, double initial, double section);
 void turnDrive(double degree);
 void turnDrive(double degree, double precision);
 } // namespace Motion
