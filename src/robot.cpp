@@ -23,6 +23,13 @@ void drivetrainside::stop()
     back.stop();
 }
 
+void drivetrainside::stop(vex::brakeType brake)
+{
+    front.stop(brake);
+    middle.stop(brake);
+    back.stop(brake);
+}
+
 double drivetrainside::read(int32_t motor)
 {
     switch (motor)
@@ -79,6 +86,12 @@ void drivetrain::stop()
 {
     left.stop();
     right.stop();
+}
+
+void drivetrain::stop(vex::brakeType brake)
+{
+    left.stop(brake);
+    right.stop(brake);
 }
 
 void drivetrain::reset()

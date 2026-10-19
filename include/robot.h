@@ -18,6 +18,7 @@ struct drivetrainside
 
     void spin(double voltage);
     void stop();
+    void stop(vex::brakeType brake);
     double read(int32_t motor);
     double read();
     void reset();
@@ -38,6 +39,7 @@ struct drivetrain
     void movefor(double voltage, double time);
     void turn(double voltage);
     void stop();
+    void stop(vex::brakeType brake);
     void reset();
     double read();
 };
