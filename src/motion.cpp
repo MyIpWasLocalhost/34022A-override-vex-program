@@ -37,7 +37,8 @@ void pid::clear()
 }
 
 pid linearPID = pid(20, 2, 0, 90);
-pid turnPID = pid(160, 14, 900, 10);
+pid turnPID = pid(160, 17, 900, 10);
+pid liftPID = pid(50, 5, 0, 50);
 
 coefficient current_coefficient = p;
 sizes quantity = l;
@@ -242,10 +243,18 @@ void hybridLinearDrive(double degree, double initial, double section, double pre
     Robot::Brain.resetTimer();
     Robot::DT.reset();
     linearPID.clear();
-    double bound = degree * section;
     Robot::DT.move(initial);
-    while (Robot::DT.read() < bound)
-        vex::wait(10, vex::msec);
+    double bound = degree * section;
+    if (degree > 0)
+    {
+        while (Robot::DT.read() < bound)
+            vex::wait(10, vex::msec);
+    }
+    else
+    {
+        while (Robot::DT.read() > bound)
+            vex::wait(10, vex::msec);
+    }
 
     constexpr int required_count = 5;
     int settle_counter = 0;
@@ -302,6 +311,35 @@ void turnDrive(double degree, double precision)
     }
 
     Robot::DT.stop();
+}
+
+void moveLiftTo(double degree, double precision)
+{
+    Robot::Brain.resetTimer();
+    liftPID.clear();
+    int settle_counter = 0;
+    constexpr int required_count = 4;
+    while (Robot::Brain.Timer.time(vex::msec) < 5000)
+    {
+        double error = degree - Robot::Lift.read();
+
+        if (fabs(error) < precision)
+            settle_counter++;
+        else
+            settle_counter = 0;
+        if (settle_counter > required_count) break;
+
+        double result = clamp_volt(liftPID.update(error));
+        Robot::Lift.raise(result);
+        vex::wait(10, vex::msec);
+    }
+
+    Robot::Lift.stop(vex::hold);
+}
+
+void moveLiftTo(double degree)
+{
+    moveLiftTo(degree, 50);
 }
 
 } // namespace Motion

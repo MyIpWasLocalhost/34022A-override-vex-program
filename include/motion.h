@@ -145,4 +145,6 @@ void hybridLinearDrive(double degree, double initial, double section, double pre
 void hybridLinearDrive(double degree, double initial, double section);
 void turnDrive(double degree);
 void turnDrive(double degree, double precision);
+void moveLiftTo(double degree, double precision);
+void moveLiftTo(double degree);
 } // namespace Motion
